@@ -3,12 +3,16 @@
           java.net.InetAddress
           java.net.DatagramSocket
           java.io.IOException
-          java.io.BufferedReader))
+          java.io.BufferedReader)
+  (:gen-class))
 
-(defrecord Item [id descrptn price inventory])
+(defrecord Item
+    ;This defines a non-mutable Java object.
+    [id descrptn price inventory])
 
+;hashmap with :xxxxx as key
 (def item-map
-  {:00001 (Item. "00001" "New Inspiron" "$379.99" 157)
+  {:00001 (Item. "00001" "New Inspiron 15" "$379.99" 157)
    :00002 (Item. "00002" "New Inspiron 17" "$449.99" 128)
    :00003 (Item. "00003" "New Inspiron 15R" "$549.99" 202)
    :00004 (Item. "00004" "New Inspiron 15z Ultrabook" "$749.99" 315)
@@ -21,6 +25,8 @@
 (def in-buffer (byte-array 4096))
 
 (defn process-request
+  "This will take the users input and return a vector
+   containing the contents of requested item."
   [req]
   (if (item-map (keyword req))
     (str (into [] (vals ((keyword req) item-map))))
@@ -29,9 +35,9 @@
 (defn -main
   [& args]
   (try
-    (while @recieve-valid
+    (while @recieve-valid ;;@ dereferences the atomic reference
       (let [in-packet (DatagramPacket. in-buffer (count in-buffer))
-            mutated (.receive socket in-packet)
+            mutated (.receive socket in-packet) ;Var declared only to make loop loook more Java like
             client-req (String. (.getData in-packet) 0 (.getLength in-packet))
             client-address (.getAddress in-packet)
             client-port (.getPort in-packet)]
@@ -45,4 +51,4 @@
 
     (catch IOException e
       (str "caught exception: " (.getMessage e))
-      (swap! recieve-valid #(false)))))
+      (swap! recieve-valid #(not %)))))
