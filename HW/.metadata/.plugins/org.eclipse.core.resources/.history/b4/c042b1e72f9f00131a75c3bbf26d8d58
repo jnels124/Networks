@@ -1,0 +1,23 @@
+package hw04;
+
+import java.net.*;
+import java.io.*;
+
+public class SMTPServer {
+    final private static int port = 4567;
+    static private ServerSocket servSocket;
+    public static void main (String [] args) {
+        try {
+            servSocket = new ServerSocket(port);
+            //new ServerThread(servSocket.accept()).start();
+            System.out.println("I am executing");
+        }
+        catch (IOException e) {
+            System.err.println("Unable to make connection to port 4567");
+            System.exit(-1);
+        }
+        while (true) {
+
+        }
+    }
+}

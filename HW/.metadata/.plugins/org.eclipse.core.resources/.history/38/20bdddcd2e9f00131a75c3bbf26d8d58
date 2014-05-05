@@ -1,0 +1,17 @@
+package hw04;
+
+import java.net.*;
+import java.io.*;
+
+public class SMTPClient {
+    final BufferedReader sysin = new BufferedReader (System.in);
+    final String serverAddress;
+    final
+    public static void main (String [] args) throws Exception {
+
+    }
+
+    final public String messageResponse (final String msg) {
+
+    }
+}

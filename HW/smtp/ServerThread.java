@@ -43,8 +43,10 @@ public class ServerThread extends Thread {
 
     private String handleCommand (final String msg, final String command, final String errorMSG) throws IOException {
         String fromClient;
+        System.out.println("Handle command called");
         this.clientOut.println(msg);
         fromClient = validRequest(this.clientIn.readLine(), command, errorMSG);
+        System.out.println("Client data read");
         System.out.println(fromClient);
         return fromClient;
     }
@@ -77,6 +79,7 @@ public class ServerThread extends Thread {
     private String validRequest (final String userResponse,
                                  final String expected,
                                  final String errorMSG) throws IOException{
+        System.out.println("Valid request called with user response" + userResponse);
         if (userResponse.toUpperCase().equals("QUIT")) { // Allow QUIT from anywhere
             killResources();
             return "";
