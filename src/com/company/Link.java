@@ -8,12 +8,6 @@ public class Link {
     Router end;
     int cost;
 
-    public Link () { //bad way to do this!
-        //this.start = 0;
-        //this.end = 0;
-        this.cost = Integer.MAX_VALUE - 100;
-    }
-
     public Link (Router start, Router end, int cost) {
         this.start = start;
         this.end = end;
@@ -26,7 +20,7 @@ public class Link {
         if (!(that instanceof Link)) return false;
         Link link = (Link) that;
 
-        return this.start == link.start && this.end == link.end;// && this.cost == link.cost;
+        return this.start == link.start && this.end == link.end;
     }
 
 }

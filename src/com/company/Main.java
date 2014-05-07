@@ -10,10 +10,15 @@ public class Main {
 	    try {
             int numRouters =
                     Integer.parseInt(messageResponse("Please enter the number of routers you wish to use "));
+            int srcRouter =
+                    Integer.parseInt(messageResponse("Please provide the src node (0 - (n-1))"));
+
+            while (numRouters < 2)
+                numRouters = Integer.parseInt(messageResponse("Please enter the number of routers you wish to use "));
             String fileName = messageResponse("Please enter the path of the file");
             ArrayList<Router> routers = generateRouters(numRouters);
             routers = readLinkInfo(fileName, routers);
-            System.out.println("The forwarding table is " + new Dijkstra (numRouters, routers).toString());
+            System.out.println("The forwarding table is " + new Dijkstra (srcRouter, routers).toString());
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -27,21 +32,28 @@ public class Main {
     private static final ArrayList<Router> readLinkInfo (String file, ArrayList<Router> routers) {
         String line;
         StringTokenizer st;
-        //ArrayList<Router> temp = new ArrayList <Router> ();
         int start=0, end=0, cost=0;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
+            int lineNum =0;
             while ((line = reader.readLine()) != null) {
                 st = new StringTokenizer(line);
                 start = Integer.parseInt(st.nextToken());
                 end = Integer.parseInt(st.nextToken());
                 cost = Integer.parseInt(st.nextToken());
-                Link newLink = new Link (routers.get(start),
-                        routers.get(end), cost);
-                //temp.add(newLink);
+
+                boolean validLink = (start != end && start >= 0 && start <= routers.size());
+                validLink = (validLink && end >= 0 && end <= routers.size());
+                if(!validLink) {
+                    System.out.println("Line " + lineNum + " has invalid put " + start + " " + end + " " + cost);
+                    reader.close();
+                    System.exit(0);
+                }
+
+                Link newLink = new Link (routers.get(start), routers.get(end), cost);
                 routers.get(start).links.add(newLink);
-                routers.get(end).links.add(newLink);
-                System.out.println ("The start is " + start + " The end is " + end + "The cost is " + cost);
+                Link swap = new Link(newLink.end, newLink.start, newLink.cost);
+                routers.get(end).links.add(swap);
             }
 
         }
