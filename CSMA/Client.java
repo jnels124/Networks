@@ -47,6 +47,7 @@ public class Client {
             new DatagramPacket(inBuff, inBuff.length);
         this.dgSocket.receive(incoming);
         return new String (incoming.getData(), 0, incoming.getLength());
+
     }
 
     final public static String messageResponse(final String message) throws IOException{
