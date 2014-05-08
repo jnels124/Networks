@@ -4,7 +4,8 @@ import java.net.*;
 public class Client {
     private final static int DESTINATION_PORT = 5678;
     private final static String SIMSTART_MSG = "SIMSTART";
-    private static BufferedReader sysIn;
+    private static BufferedReader sysIn =
+        new BufferedReader(new InputStreamReader(System.in));
     private InetAddress serverAddress;
     private int initialDelay;
     private int timeToTransmit;
@@ -12,14 +13,16 @@ public class Client {
 
     public Client (InetAddress serverAddress, int initialDelay,
                    int timeToTransmit )  throws IOException{
-        this.sysIn = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Created Client 2");
         this.serverAddress = serverAddress;
         this.initialDelay = initialDelay;
         this.timeToTransmit = timeToTransmit;
+        this.dgSocket = new DatagramSocket(DESTINATION_PORT, this.serverAddress);
         handleClient();
     }
 
     final private void handleClient () throws IOException{
+        System.out.println("Handle client called");
         int totalCollisions = 0;
         String response;
         response = sendAndWait(SIMSTART_MSG);
@@ -59,8 +62,10 @@ public class Client {
                 Integer.parseInt(messageResponse("How long does it take the host to transmit the frame entirely?"));
             final String address = messageResponse ("Please enter the server address.");
             new Client (InetAddress.getByName(address), frameReady, frameTransTime);
+            System.out.println("Created the Client");
         }
         catch (Exception e) {
+            System.out.println("There was an exception on the client\n"  + e.getMessage());
         }
     }
 }
