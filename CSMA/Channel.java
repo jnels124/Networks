@@ -3,7 +3,7 @@ import java.net.*;
 import java.util.*;
 
 public class Channel {
-    private static final int PORT = 5678;
+    private static final int PORT = 4567;
     private static final int DEFAULT_BUFFER_SIZE = 1024;
     private double propDelay;
     private static BufferedReader sysIn = new BufferedReader(new InputStreamReader(System.in));
@@ -118,6 +118,7 @@ public class Channel {
         byte [] buffer = new byte [DEFAULT_BUFFER_SIZE];
         while (true) {
             if (simStartsSent == this.numHosts) break;
+            System.out.println("In while");
             try {
                 currentPacket = new DatagramPacket(buffer, buffer.length);
                 this.dgSocket.receive(currentPacket);
@@ -125,12 +126,14 @@ public class Channel {
                                                   currentPacket.getPort(),
                                                   -1,
                                                   -1));
+                System.out.println("The data is " + currentPacket.getData());
                 simStartsSent++;
             } catch (Exception e) {
                 System.out.println( "There was an error wating for SIMSTART\n" + e.getMessage());
             }
         }
-        byte [] toClient = "YESS".getBytes();
+        System.out.println("Sending yes");
+        byte [] toClient = "YESSS".getBytes();
         for (Host host : this.connectedHosts) {
             currentPacket = new DatagramPacket(toClient, toClient.length, host.getHostIP(), host.getPort());
             this.dgSocket.send(currentPacket);
