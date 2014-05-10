@@ -143,6 +143,7 @@ public class Channel {
     public double getPropDelay () {
         return this.propDelay;
     }
+
     final public static String messageResponse(final String message) throws IOException{
         System.out.println(message);
         return sysIn.readLine();
